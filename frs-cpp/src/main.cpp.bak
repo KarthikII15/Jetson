@@ -129,12 +129,6 @@ int main(int argc, char** argv) {
                 std::string hb_body = std::string("{\"stats\":{\"frames_processed\":") +
                     std::to_string(s.frames_processed) + "}}";
                 hb_http.post("/api/cameras/entrance-cam-01/heartbeat", hb_body);
-                // Jetson device heartbeat
-                std::string jetson_body = std::string("{\"stats\":{\"frames_processed\":") +
-                    std::to_string(s.frames_processed) +
-                    ",\"faces_detected\":" + std::to_string(s.faces_detected) +
-                    ",\"matches\":" + std::to_string(s.matches) + "}}";
-                hb_http.post("/api/cameras/jetson-orin-01/heartbeat", jetson_body);
             } catch (...) {}
         }
 
