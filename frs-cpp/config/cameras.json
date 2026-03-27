@@ -1,0 +1,15 @@
+{
+  "cameras": [
+    {
+      "id":          "entrance-cam-01",
+      "device_code": "device-1",
+      "enabled":     true,
+      "rtsp_url":    "rtsp://admin:CAMERA_PASSWORD@172.18.3.201:554/Streaming/Channels/102",
+      "fps_target":  5,
+      "width":       1280,
+      "height":      720,
+      "hw_decode":   true,
+      "notes":       "Prama/Hikvision Main Entrance. Channel 102 = ch1 sub-stream (low res, 5fps for attendance)"
+    }
+  ]
+}

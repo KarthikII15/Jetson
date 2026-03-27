@@ -1,0 +1,74 @@
+
+sed -i "s|cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'|'/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml'|" \
+  /home/motivity/FRS/calibrate_direction.py
+
+export DISPLAY=:0
+python3 /home/motivity/FRS/calibrate_direction.py
+
+
+============================================================
+FRS2 DIRECTION CALIBRATION TOOL
+============================================================
+Camera: rtsp://admin:Mli%40Frs!2026@172.18.3.201:554/h264
+
+Instructions:
+  Press 'e' → start recording ENTRY walkthrough
+  Press 'x' → start recording EXIT walkthrough
+  Press 's' → stop current recording
+  Press 'r' → show results and determine direction
+  Press 'q' → quit
+============================================================
+✅ Camera opened: 1920x1080
+   Y range: 0 (top) → 1080 (bottom)
+Traceback (most recent call last):
+  File "/home/motivity/FRS/calibrate_direction.py", line 105, in <module>
+    cv2.imshow('FRS2 Direction Calibration', frame)
+cv2.error: OpenCV(4.5.4) ./modules/highgui/src/window_gtk.cpp:635: error: (-2:Unspecified error) Can't initialize GTK backend in function 'cvInitSystem'
+
+motivity@Motivity-FRS:~/FRS$ ^C
+
+
+
+
+
+
+
+# Reduce cooldowns for testing
+cat > /opt/frs/config.json << 'EOF'
+{
+  "models": {
+    "face_detection": {
+      "engine_path": "/opt/frs-models/trt/yolov8n-face-fp16.engine",
+      "onnx_path": "/opt/frs-models/onnx/yolov8n-face.onnx"
+    },
+    "face_embedding": {
+      "engine_path": "/opt/frs-models/trt/arcface-r50-fp16.engine",
+      "onnx_path": "/opt/frs-models/onnx/arcface-r50.onnx"
+    }
+  },
+  "backend": {
+    "url": "http://172.20.100.222:8080",
+    "token_path": "/opt/frs/device_token.txt"
+  },
+  "conf_threshold": 0.4,
+  "nms_threshold": 0.45,
+  "match_threshold": 0.5,
+  "cooldown_seconds": 3,
+  "inference_threads": 2,
+  "queue_depth": 64,
+  "direction": {
+    "enabled": true,
+    "entry_direction": "increasing",
+    "y_threshold": 80,
+    "x_threshold": 50,
+    "tracking_window": 6,
+    "track_ttl_seconds": 10,
+    "cooldown_seconds": 5,
+    "use_axis": "y"
+  }
+}
+EOF
+
+sudo systemctl restart frs-runner
+sleep 6
+sudo journalctl -u frs-runner -f --no-pager | grep -E "✅|🧭|Direction"

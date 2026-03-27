@@ -1,0 +1,22 @@
+{
+  "models": {
+    "face_detection": {
+      "engine_path": "/opt/frs-models/trt/yolov8n-face-fp16.engine",
+      "onnx_path":   "/opt/frs-models/onnx/yolov8n-face.onnx"
+    },
+    "face_embedding": {
+      "engine_path": "/opt/frs-models/trt/arcface-r50-fp16.engine",
+      "onnx_path":   "/opt/frs-models/onnx/arcface-r50.onnx"
+    }
+  },
+  "backend": {
+    "url":        "http://172.20.100.222:8080",
+    "token_path": "/opt/frs/device_token.txt"
+  },
+  "conf_threshold":    0.45,
+  "nms_threshold":     0.45,
+  "match_threshold":   0.55,
+  "cooldown_seconds":  10,
+  "inference_threads": 2,
+  "queue_depth":       64
+}

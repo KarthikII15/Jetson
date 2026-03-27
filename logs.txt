@@ -1,0 +1,77 @@
+                                           sudo journalctl -u frs-runner -f --no-pager | grep -E "✅|🧭|STATS|error" 
+Mar 24 20:31:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:31:41.352] [info] STATS | frames=58 faces=0 matches=0 unknowns=0 queue=0/64
+Mar 24 20:32:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:32:11.361] [info] STATS | frames=118 faces=4 matches=0 unknowns=4 queue=0/64
+Mar 24 20:32:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:32:41.368] [info] STATS | frames=178 faces=12 matches=0 unknowns=12 queue=0/64
+Mar 24 20:33:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:11.375] [info] STATS | frames=238 faces=18 matches=0 unknowns=18 queue=0/64
+Mar 24 20:33:35 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:35.769] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.555
+Mar 24 20:33:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:41.382] [info] STATS | frames=298 faces=89 matches=1 unknowns=88 queue=0/64
+Mar 24 20:33:44 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:44.770] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.611
+Mar 24 20:33:47 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:47.974] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.570
+Mar 24 20:33:52 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:52.452] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.592
+Mar 24 20:33:52 Motivity-FRS frs-runner[20774]: [2026-03-24 20:33:52.453] [info] [entrance-cam-01] 🧭 Sai Dinesh → entry (track: entrance-cam-01_trk6)
+Mar 24 20:34:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:11.389] [info] STATS | frames=358 faces=148 matches=4 unknowns=140 queue=0/64
+Mar 24 20:34:34 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:34.633] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.568
+Mar 24 20:34:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:41.397] [info] STATS | frames=418 faces=179 matches=5 unknowns=169 queue=0/64
+Mar 24 20:34:46 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:46.251] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.556
+Mar 24 20:34:49 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:49.634] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.591
+Mar 24 20:34:49 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:49.635] [info] [entrance-cam-01] 🧭 Sai Dinesh → entry (track: entrance-cam-01_trk10)
+Mar 24 20:34:55 Motivity-FRS frs-runner[20774]: [2026-03-24 20:34:55.252] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.624
+Mar 24 20:35:07 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:07.228] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.590
+Mar 24 20:35:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:11.404] [info] STATS | frames=478 faces=299 matches=9 unknowns=284 queue=0/64
+Mar 24 20:35:16 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:16.231] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.582
+Mar 24 20:35:22 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:22.659] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.556
+Mar 24 20:35:40 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:40.255] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.611
+Mar 24 20:35:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:41.412] [info] STATS | frames=538 faces=395 matches=12 unknowns=375 queue=0/64
+Mar 24 20:35:50 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:50.794] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.567
+Mar 24 20:35:50 Motivity-FRS frs-runner[20774]: [2026-03-24 20:35:50.794] [info] [entrance-cam-01] 🧭 Sai Dinesh → entry (track: entrance-cam-01_trk11)
+Mar 24 20:36:08 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:08.794] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.562
+Mar 24 20:36:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:11.419] [info] STATS | frames=598 faces=515 matches=14 unknowns=493 queue=0/64
+Mar 24 20:36:17 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:17.794] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.583
+Mar 24 20:36:17 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:17.794] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk13)
+Mar 24 20:36:26 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:26.797] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.580
+Mar 24 20:36:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:36:41.426] [info] STATS | frames=658 faces=608 matches=16 unknowns=584 queue=0/64
+Mar 24 20:37:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:37:11.433] [info] STATS | frames=718 faces=629 matches=16 unknowns=605 queue=0/64
+Mar 24 20:37:40 Motivity-FRS frs-runner[20774]: [2026-03-24 20:37:40.663] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.607
+Mar 24 20:37:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:37:41.440] [info] STATS | frames=778 faces=666 matches=17 unknowns=641 queue=0/64
+Mar 24 20:37:49 Motivity-FRS frs-runner[20774]: [2026-03-24 20:37:49.639] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.554
+Mar 24 20:37:49 Motivity-FRS frs-runner[20774]: [2026-03-24 20:37:49.639] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk17)
+Mar 24 20:38:06 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:06.177] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.553
+Mar 24 20:38:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:11.447] [info] STATS | frames=838 faces=735 matches=19 unknowns=706 queue=0/64
+Mar 24 20:38:28 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:28.255] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.582
+Mar 24 20:38:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:41.456] [info] STATS | frames=898 faces=814 matches=20 unknowns=784 queue=0/64
+Mar 24 20:38:46 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:46.660] [info] [entrance-cam-01] ✅ Karthik () sim=0.642
+Mar 24 20:38:46 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:46.660] [info] [entrance-cam-01] 🧭 Karthik → exit (track: entrance-cam-01_trk23)
+Mar 24 20:38:55 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:55.459] [info] [entrance-cam-01] ✅ Karthik () sim=0.575
+Mar 24 20:38:56 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:56.801] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.573
+Mar 24 20:38:58 Motivity-FRS frs-runner[20774]: [2026-03-24 20:38:58.660] [info] [entrance-cam-01] ✅ Karthik () sim=0.588
+Mar 24 20:39:01 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:01.279] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.571
+Mar 24 20:39:01 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:01.681] [info] [entrance-cam-01] ✅ Karthik () sim=0.716
+Mar 24 20:39:04 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:04.686] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.564
+Mar 24 20:39:05 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:05.775] [info] [entrance-cam-01] ✅ Karthik () sim=0.696
+Mar 24 20:39:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:11.464] [info] STATS | frames=958 faces=885 matches=28 unknowns=827 queue=0/64
+Mar 24 20:39:28 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:28.661] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.571
+Mar 24 20:39:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:39:41.471] [info] STATS | frames=1018 faces=915 matches=29 unknowns=856 queue=0/64
+Mar 24 20:40:06 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:06.005] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.552
+Mar 24 20:40:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:11.478] [info] STATS | frames=1078 faces=962 matches=30 unknowns=901 queue=0/64
+Mar 24 20:40:14 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:14.780] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.622
+Mar 24 20:40:14 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:14.780] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk32)
+Mar 24 20:40:28 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:28.259] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.596
+Mar 24 20:40:37 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:37.284] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.592
+Mar 24 20:40:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:40:41.485] [info] STATS | frames=1138 faces=1108 matches=33 unknowns=1044 queue=0/64
+Mar 24 20:41:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:41:11.493] [info] STATS | frames=1198 faces=1230 matches=33 unknowns=1166 queue=0/64
+Mar 24 20:41:28 Motivity-FRS frs-runner[20774]: [2026-03-24 20:41:28.687] [info] [entrance-cam-01] ✅ Karthik () sim=0.552
+Mar 24 20:41:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:41:41.499] [info] STATS | frames=1258 faces=1246 matches=34 unknowns=1180 queue=0/64
+Mar 24 20:42:05 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:05.801] [info] [entrance-cam-01] ✅ Karthik () sim=0.577
+Mar 24 20:42:09 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:09.004] [info] [entrance-cam-01] ✅ Karthik () sim=0.571
+Mar 24 20:42:09 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:09.004] [info] [entrance-cam-01] 🧭 Karthik → entry (track: entrance-cam-01_trk40)
+Mar 24 20:42:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:11.508] [info] STATS | frames=1318 faces=1277 matches=36 unknowns=1209 queue=0/64
+Mar 24 20:42:28 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:28.284] [info] [entrance-cam-01] ✅ Karthik () sim=0.551
+Mar 24 20:42:34 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:34.285] [info] [entrance-cam-01] ✅ Karthik () sim=0.608
+Mar 24 20:42:40 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:40.488] [info] [entrance-cam-01] ✅ Karthik () sim=0.572
+Mar 24 20:42:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:41.515] [info] STATS | frames=1378 faces=1326 matches=39 unknowns=1254 queue=0/64
+Mar 24 20:42:49 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:49.687] [info] [entrance-cam-01] ✅ Karthik () sim=0.569
+Mar 24 20:42:53 Motivity-FRS frs-runner[20774]: [2026-03-24 20:42:53.782] [info] [entrance-cam-01] ✅ Karthik () sim=0.610
+Mar 24 20:43:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:11.521] [info] STATS | frames=1438 faces=1367 matches=41 unknowns=1289 queue=0/64
+Mar 24 20:43:20 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:20.826] [info] [entrance-cam-01] ✅ Karthik () sim=0.629
+Mar 24 20:43:38 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:38.828] [info] [entrance-cam-01] ✅ Karthik () sim=0.612
+Mar 24 20:43:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:41.529] [info] STATS | frames=1498 faces=1423 matches=43 unknowns=1343 queue=0/64

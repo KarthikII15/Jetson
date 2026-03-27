@@ -1,0 +1,7 @@
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/frs_runner.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/edit_cache.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/rebuild_cache.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/list_install_components.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/install.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/install/local.dir
+/home/motivity/FRS/frs-cpp/build/CMakeFiles/install/strip.dir
