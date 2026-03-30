@@ -75,3 +75,139 @@ Mar 24 20:43:11 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:11.521] [info]
 Mar 24 20:43:20 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:20.826] [info] [entrance-cam-01] ✅ Karthik () sim=0.629
 Mar 24 20:43:38 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:38.828] [info] [entrance-cam-01] ✅ Karthik () sim=0.612
 Mar 24 20:43:41 Motivity-FRS frs-runner[20774]: [2026-03-24 20:43:41.529] [info] STATS | frames=1498 faces=1423 matches=43 unknowns=1343 queue=0/64
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+30-3-2026:
+
+[2026-03-30 11:59:41.360] [info] [entrance-cam-01] HW decoder (nvv4l2decoder) opened
+[2026-03-30 11:59:41.628] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:00:09.546] [info] STATS | frames=56 faces=59 matches=0 unknowns=59 queue=0/64
+[2026-03-30 12:00:39.561] [info] STATS | frames=116 faces=154 matches=0 unknowns=154 queue=0/64
+[2026-03-30 12:01:09.572] [info] STATS | frames=176 faces=249 matches=0 unknowns=249 queue=0/64
+[2026-03-30 12:01:32.591] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:01:39.583] [info] STATS | frames=236 faces=369 matches=0 unknowns=369 queue=0/64
+[2026-03-30 12:02:09.594] [info] STATS | frames=296 faces=489 matches=0 unknowns=489 queue=0/64
+[2026-03-30 12:02:16.110] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:02:25.109] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:02:25.396] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.561
+[2026-03-30 12:02:25.396] [info] [entrance-cam-01_trk0] x_history size=4 fired=false X=[565 446 565 446 ]
+[2026-03-30 12:02:25.396] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk0)
+[2026-03-30 12:02:25.402] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:02:26.476] [info] [entrance-cam-01] ✅ Karthik () sim=0.561
+[2026-03-30 12:02:26.476] [info] [entrance-cam-01_trk3] x_history size=1 fired=false X=[237 ]
+[2026-03-30 12:02:29.613] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:02:30.969] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.570
+[2026-03-30 12:02:30.969] [info] [entrance-cam-01_trk4] x_history size=1 fired=false X=[395 ]
+[2026-03-30 12:02:32.881] [info] [entrance-cam-01] ✅ Karthik () sim=0.558
+[2026-03-30 12:02:32.881] [info] [entrance-cam-01_trk3] x_history size=4 fired=false X=[216 210 203 92 ]
+[2026-03-30 12:02:32.881] [info] [entrance-cam-01] 🧭 Karthik → exit (track: entrance-cam-01_trk3)
+[2026-03-30 12:02:32.887] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:02:35.447] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.650
+[2026-03-30 12:02:35.447] [info] [entrance-cam-01_trk4] x_history size=4 fired=false X=[412 420 436 463 ]
+[2026-03-30 12:02:35.447] [info] [entrance-cam-01] 🧭 Sai Dinesh → entry (track: entrance-cam-01_trk4)
+[2026-03-30 12:02:35.452] [info] [entrance-cam-01] Direction POST entry → HTTP 500
+[2026-03-30 12:02:38.489] [info] [entrance-cam-01] ✅ Karthik () sim=0.552
+[2026-03-30 12:02:38.489] [info] [entrance-cam-01_trk3] x_history size=4 fired=true X=[72 151 144 132 ]
+[2026-03-30 12:02:39.605] [info] STATS | frames=356 faces=608 matches=6 unknowns=594 queue=0/64
+[2026-03-30 12:02:41.610] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:03:09.617] [info] STATS | frames=416 faces=684 matches=6 unknowns=670 queue=0/64
+[2026-03-30 12:03:39.629] [info] STATS | frames=476 faces=751 matches=6 unknowns=737 queue=0/64
+[2026-03-30 12:04:08.610] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:04:09.641] [info] STATS | frames=536 faces=824 matches=6 unknowns=810 queue=0/64
+[2026-03-30 12:04:13.111] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:04:14.609] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:04:20.609] [info] [Track] entrance-cam-01_trk0 reset after 6.2s gap
+[2026-03-30 12:04:29.609] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:04:39.652] [info] STATS | frames=596 faces=908 matches=6 unknowns=894 queue=0/64
+[2026-03-30 12:04:41.451] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.607
+[2026-03-30 12:04:41.451] [info] [entrance-cam-01_trk0] x_history size=4 fired=false X=[504 491 484 477 ]
+[2026-03-30 12:04:48.972] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.600
+[2026-03-30 12:04:48.972] [info] [entrance-cam-01_trk9] x_history size=4 fired=false X=[743 751 746 736 ]
+[2026-03-30 12:04:57.969] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.590
+[2026-03-30 12:04:57.969] [info] [entrance-cam-01_trk0] x_history size=4 fired=false X=[387 407 401 394 ]
+[2026-03-30 12:05:09.664] [info] STATS | frames=656 faces=1021 matches=9 unknowns=1004 queue=0/64
+[2026-03-30 12:05:10.150] [info] [entrance-cam-01] ✅ Karthik () sim=0.562
+[2026-03-30 12:05:10.150] [info] [entrance-cam-01_trk0] x_history size=4 fired=false X=[350 365 388 535 ]
+[2026-03-30 12:05:10.150] [info] [entrance-cam-01] 🧭 Karthik → entry (track: entrance-cam-01_trk0)
+[2026-03-30 12:05:10.156] [info] [entrance-cam-01] Direction POST entry → HTTP 500
+[2026-03-30 12:05:17.451] [info] [entrance-cam-01] ✅ Karthik () sim=0.649
+[2026-03-30 12:05:17.451] [info] [entrance-cam-01_trk0] x_history size=4 fired=true X=[610 467 431 372 ]
+[2026-03-30 12:05:17.611] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:05:23.651] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.562
+[2026-03-30 12:05:23.651] [info] [entrance-cam-01_trk9] x_history size=4 fired=false X=[691 703 710 703 ]
+[2026-03-30 12:05:29.609] [info] [Track] entrance-cam-01_trk0 reset after 7.6s gap
+[2026-03-30 12:05:30.990] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.615
+[2026-03-30 12:05:30.990] [info] [entrance-cam-01_trk9] x_history size=4 fired=false X=[720 618 572 538 ]
+[2026-03-30 12:05:30.990] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk9)
+[2026-03-30 12:05:30.995] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:05:31.151] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:05:34.218] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.565
+[2026-03-30 12:05:34.218] [info] [entrance-cam-01_trk11] x_history size=3 fired=false X=[386 396 372 ]
+[2026-03-30 12:05:39.677] [info] STATS | frames=716 faces=1124 matches=14 unknowns=1099 queue=0/64
+[2026-03-30 12:05:40.153] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:05:48.995] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.568
+[2026-03-30 12:05:48.995] [info] [entrance-cam-01_trk11] x_history size=4 fired=false X=[561 528 462 469 ]
+[2026-03-30 12:05:48.995] [info] [entrance-cam-01] 🧭 Sai Dinesh → exit (track: entrance-cam-01_trk11)
+[2026-03-30 12:05:49.004] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:06:04.150] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:06:08.447] [info] [entrance-cam-01] ✅ Karthik () sim=0.553
+[2026-03-30 12:06:08.447] [info] [entrance-cam-01_trk11] x_history size=4 fired=true X=[598 554 536 506 ]
+[2026-03-30 12:06:09.689] [info] STATS | frames=776 faces=1226 matches=16 unknowns=1199 queue=0/64
+[2026-03-30 12:06:11.610] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:06:14.609] [info] [Track] entrance-cam-01_trk11 reset after 6.2s gap
+[2026-03-30 12:06:16.150] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:06:23.610] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:06:31.008] [info] [entrance-cam-01] ✅ Karthik () sim=0.584
+[2026-03-30 12:06:31.008] [info] [entrance-cam-01_trk16] x_history size=4 fired=false X=[173 226 252 268 ]
+[2026-03-30 12:06:31.008] [info] [entrance-cam-01] 🧭 Karthik → entry (track: entrance-cam-01_trk16)
+[2026-03-30 12:06:31.013] [info] [entrance-cam-01] Direction POST entry → HTTP 500
+[2026-03-30 12:06:39.701] [info] STATS | frames=836 faces=1320 matches=17 unknowns=1292 queue=0/64
+[2026-03-30 12:06:46.150] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:06:50.610] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:07.149] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:07.189] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.590
+[2026-03-30 12:07:07.189] [info] [entrance-cam-01_trk15] x_history size=4 fired=false X=[428 442 426 450 ]
+[2026-03-30 12:07:08.606] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:09.712] [info] STATS | frames=896 faces=1406 matches=18 unknowns=1377 queue=0/64
+[2026-03-30 12:07:14.607] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:20.627] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:22.148] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:30.985] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.601
+[2026-03-30 12:07:30.985] [info] [entrance-cam-01_trk21] x_history size=4 fired=false X=[539 621 539 620 ]
+[2026-03-30 12:07:30.985] [info] [entrance-cam-01] 🧭 Sai Dinesh → entry (track: entrance-cam-01_trk21)
+[2026-03-30 12:07:30.990] [info] [entrance-cam-01] Direction POST entry → HTTP 500
+[2026-03-30 12:07:31.148] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:39.724] [info] STATS | frames=956 faces=1489 matches=19 unknowns=1457 queue=0/64
+[2026-03-30 12:07:44.857] [info] [entrance-cam-01] ✅ Karthik () sim=0.576
+[2026-03-30 12:07:44.858] [info] [entrance-cam-01_trk23] x_history size=4 fired=false X=[624 579 532 482 ]
+[2026-03-30 12:07:44.858] [info] [entrance-cam-01] 🧭 Karthik → exit (track: entrance-cam-01_trk23)
+[2026-03-30 12:07:44.863] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:07:46.149] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:49.009] [info] [entrance-cam-01] ✅ Sai Dinesh () sim=0.556
+[2026-03-30 12:07:49.009] [info] [entrance-cam-01_trk24] x_history size=4 fired=false X=[394 418 407 401 ]
+[2026-03-30 12:07:49.150] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:07:52.149] [info] [Track] entrance-cam-01_trk23 reset after 6.2s gap
+[2026-03-30 12:07:53.609] [info] [Track] entrance-cam-01_trk21 reset after 9.2s gap
+[2026-03-30 12:08:02.451] [info] [entrance-cam-01] ✅ Karthik () sim=0.575
+[2026-03-30 12:08:02.451] [info] [entrance-cam-01_trk23] x_history size=4 fired=false X=[551 416 379 336 ]
+[2026-03-30 12:08:02.451] [info] [entrance-cam-01] 🧭 Karthik → exit (track: entrance-cam-01_trk23)
+[2026-03-30 12:08:02.457] [info] [entrance-cam-01] Direction POST exit → HTTP 500
+[2026-03-30 12:08:07.353] [info] [Track] New track for cam=entrance-cam-01 (no X-match within 150px)
+[2026-03-30 12:08:09.735] [info] STATS | frames=1016 faces=1593 matches=22 unknowns=1558 queue=0/64

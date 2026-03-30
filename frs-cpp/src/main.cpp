@@ -33,14 +33,15 @@ Config loadConfig(const std::string& path) {
     // Direction config
     if (j.contains("direction")) {
         auto& d = j["direction"];
-        cfg.dir.enabled      = d.value("enabled",          false);
-        cfg.dir.entry_dir    = d.value("entry_direction",   "increasing");
-        cfg.dir.y_threshold  = d.value("y_threshold",       45.0f);
-        cfg.dir.window_size  = d.value("tracking_window",   6);
-        cfg.dir.track_ttl    = d.value("track_ttl_seconds", 30.0);
-        cfg.dir.cooldown_sec = d.value("cooldown_seconds",  300.0);
+        cfg.dir.enabled      = d.value("enabled",           false);
+        cfg.dir.entry_dir    = d.value("entry_direction",    "increasing");
+        cfg.dir.x_threshold  = d.value("x_threshold",        30.0f);
+        cfg.dir.window_size  = d.value("tracking_window",    4);
+        cfg.dir.track_ttl    = d.value("track_ttl_seconds",  10.0);
+        cfg.dir.cooldown_sec = d.value("cooldown_seconds",   30.0);
+        cfg.dir.line_x       = d.value("line_x",             960.0f);
+        cfg.dir.mode         = d.value("mode",               "slope");
     }
-    cfg.queue_depth       = j.value("queue_depth",       64);
     return cfg;
 }
 

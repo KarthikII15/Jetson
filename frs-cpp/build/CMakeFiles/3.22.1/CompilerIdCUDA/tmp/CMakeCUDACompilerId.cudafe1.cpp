@@ -34579,59 +34579,51 @@ return ::cudaGetKernel(kernelPtr, (const void *)func);
 } 
 # 2364 "/usr/local/cuda/bin/../targets/aarch64-linux/include/cuda_runtime.h"
 #pragma GCC diagnostic pop
-# 492 "CMakeCUDACompilerId.cu"
+# 64 "CMakeCUDACompilerId.cu"
 const char *info_compiler = ("INFO:compiler[NVIDIA]"); 
-# 494
+# 66
 const char *info_simulate = ("INFO:simulate[GNU]"); 
-# 819 "CMakeCUDACompilerId.cu"
+# 336 "CMakeCUDACompilerId.cu"
 const char info_version[] = {'I', 'N', 'F', 'O', ':', 'c', 'o', 'm', 'p', 'i', 'l', 'e', 'r', '_', 'v', 'e', 'r', 's', 'i', 'o', 'n', '[', (('0') + ((12 / 10000000) % 10)), (('0') + ((12 / 1000000) % 10)), (('0') + ((12 / 100000) % 10)), (('0') + ((12 / 10000) % 10)), (('0') + ((12 / 1000) % 10)), (('0') + ((12 / 100) % 10)), (('0') + ((12 / 10) % 10)), (('0') + (12 % 10)), '.', (('0') + ((6 / 10000000) % 10)), (('0') + ((6 / 1000000) % 10)), (('0') + ((6 / 100000) % 10)), (('0') + ((6 / 10000) % 10)), (('0') + ((6 / 1000) % 10)), (('0') + ((6 / 100) % 10)), (('0') + ((6 / 10) % 10)), (('0') + (6 % 10)), '.', (('0') + ((68 / 10000000) % 10)), (('0') + ((68 / 1000000) % 10)), (('0') + ((68 / 100000) % 10)), (('0') + ((68 / 10000) % 10)), (('0') + ((68 / 1000) % 10)), (('0') + ((68 / 100) % 10)), (('0') + ((68 / 10) % 10)), (('0') + (68 % 10)), ']', '\000'}; 
-# 848 "CMakeCUDACompilerId.cu"
+# 365 "CMakeCUDACompilerId.cu"
 const char info_simulate_version[] = {'I', 'N', 'F', 'O', ':', 's', 'i', 'm', 'u', 'l', 'a', 't', 'e', '_', 'v', 'e', 'r', 's', 'i', 'o', 'n', '[', (('0') + ((11 / 10000000) % 10)), (('0') + ((11 / 1000000) % 10)), (('0') + ((11 / 100000) % 10)), (('0') + ((11 / 10000) % 10)), (('0') + ((11 / 1000) % 10)), (('0') + ((11 / 100) % 10)), (('0') + ((11 / 10) % 10)), (('0') + (11 % 10)), '.', (('0') + ((4 / 10000000) % 10)), (('0') + ((4 / 1000000) % 10)), (('0') + ((4 / 100000) % 10)), (('0') + ((4 / 10000) % 10)), (('0') + ((4 / 1000) % 10)), (('0') + ((4 / 100) % 10)), (('0') + ((4 / 10) % 10)), (('0') + (4 % 10)), ']', '\000'}; 
-# 868
+# 385
 const char *info_platform = ("INFO:platform[Linux]"); 
-# 869
+# 386
 const char *info_arch = ("INFO:arch[]"); 
-# 874
-const char *info_host_compiler = ("INFO:host_compiler[GNU]"); 
-# 879
-const char info_host_compiler_version[] = {'I', 'N', 'F', 'O', ':', 'h', 'o', 's', 't', '_', 'c', 'o', 'm', 'p', 'i', 'l', 'e', 'r', '_', 'v', 'e', 'r', 's', 'i', 'o', 'n', '[', (('0') + ((11 / 10000000) % 10)), (('0') + ((11 / 1000000) % 10)), (('0') + ((11 / 100000) % 10)), (('0') + ((11 / 10000) % 10)), (('0') + ((11 / 1000) % 10)), (('0') + ((11 / 100) % 10)), (('0') + ((11 / 10) % 10)), (('0') + (11 % 10)), '.', (('0') + ((4 / 10000000) % 10)), (('0') + ((4 / 1000000) % 10)), (('0') + ((4 / 100000) % 10)), (('0') + ((4 / 10000) % 10)), (('0') + ((4 / 1000) % 10)), (('0') + ((4 / 100) % 10)), (('0') + ((4 / 10) % 10)), (('0') + (4 % 10)), '.', (('0') + ((0 / 10000000) % 10)), (('0') + ((0 / 1000000) % 10)), (('0') + ((0 / 100000) % 10)), (('0') + ((0 / 10000) % 10)), (('0') + ((0 / 1000) % 10)), (('0') + ((0 / 100) % 10)), (('0') + ((0 / 10) % 10)), (('0') + (0 % 10)), ']', '\000'}; 
-# 911 "CMakeCUDACompilerId.cu"
+# 390
 const char *info_language_standard_default = ("INFO:standard_default[17]"); 
-# 929
+# 406
 const char *info_language_extensions_default = ("INFO:extensions_default[ON]"); 
-# 940
+# 418
 int main(int argc, char *argv[]) 
-# 941
+# 419
 { 
-# 942
+# 420
 int require = 0; 
-# 943
+# 421
 require += (info_compiler[argc]); 
-# 944
+# 422
 require += (info_platform[argc]); 
-# 946
+# 424
 require += (info_version[argc]); 
-# 949
+# 427
 require += (info_simulate[argc]); 
-# 952
+# 430
 require += (info_simulate_version[argc]); 
-# 955
-require += (info_host_compiler[argc]); 
-# 958
-require += (info_host_compiler_version[argc]); 
-# 960
+# 432
 require += (info_language_standard_default[argc]); 
-# 961
+# 433
 require += (info_language_extensions_default[argc]); 
-# 962
+# 434
 (void)argv; 
-# 963
+# 435
 return require; 
-# 964
+# 436
 } 
 
 # 1 "CMakeCUDACompilerId.cudafe1.stub.c"
-#define _NV_ANON_NAMESPACE _GLOBAL__N__d9920286_22_CMakeCUDACompilerId_cu_bd57c623
+#define _NV_ANON_NAMESPACE _GLOBAL__N__c6f6f7ec_22_CMakeCUDACompilerId_cu_bd57c623
 #ifdef _NV_ANON_NAMESPACE
 #endif
 # 1 "CMakeCUDACompilerId.cudafe1.stub.c"

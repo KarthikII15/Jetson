@@ -32458,11 +32458,11 @@ static __inline__ __attribute__((host)) cudaError_t cudaGetKernel(
 #pragma GCC diagnostic pop
 # 0 "<command-line>" 2
 # 1 "CMakeCUDACompilerId.cu"
-# 492 "CMakeCUDACompilerId.cu"
+# 64 "CMakeCUDACompilerId.cu"
 char const* info_compiler = "INFO" ":" "compiler[" "NVIDIA" "]";
 
 char const* info_simulate = "INFO" ":" "simulate[" "GNU" "]";
-# 819 "CMakeCUDACompilerId.cu"
+# 336 "CMakeCUDACompilerId.cu"
 char const info_version[] = {
   'I', 'N', 'F', 'O', ':',
   'c','o','m','p','i','l','e','r','_','v','e','r','s','i','o','n','[',
@@ -32477,7 +32477,7 @@ char const info_version[] = {
 
 
   ']','\0'};
-# 848 "CMakeCUDACompilerId.cu"
+# 365 "CMakeCUDACompilerId.cu"
 char const info_simulate_version[] = {
   'I', 'N', 'F', 'O', ':',
   's','i','m','u','l','a','t','e','_','v','e','r','s','i','o','n','[',
@@ -32503,30 +32503,7 @@ char const* info_arch = "INFO" ":" "arch[" "]";
 
 
 
-
-char const* info_host_compiler = "INFO" ":" "host_compiler[" "GNU" "]";
-
-
-
-
-char const info_host_compiler_version[] = {
-  'I', 'N', 'F', 'O', ':','h','o','s','t','_',
-  'c','o','m','p','i','l','e','r','_','v','e','r','s','i','o','n','[',
-  ('0' + (((11) / 10000000)%10)), ('0' + (((11) / 1000000)%10)), ('0' + (((11) / 100000)%10)), ('0' + (((11) / 10000)%10)), ('0' + (((11) / 1000)%10)), ('0' + (((11) / 100)%10)), ('0' + (((11) / 10)%10)), ('0' + ((11) % 10)),
-
-  '.', ('0' + (((4) / 10000000)%10)), ('0' + (((4) / 1000000)%10)), ('0' + (((4) / 100000)%10)), ('0' + (((4) / 10000)%10)), ('0' + (((4) / 1000)%10)), ('0' + (((4) / 100)%10)), ('0' + (((4) / 10)%10)), ('0' + ((4) % 10)),
-
-   '.', ('0' + (((0) / 10000000)%10)), ('0' + (((0) / 1000000)%10)), ('0' + (((0) / 100000)%10)), ('0' + (((0) / 10000)%10)), ('0' + (((0) / 1000)%10)), ('0' + (((0) / 100)%10)), ('0' + (((0) / 10)%10)), ('0' + ((0) % 10)),
-
-
-
-
-
-  ']','\0'};
-# 911 "CMakeCUDACompilerId.cu"
 const char* info_language_standard_default = "INFO" ":" "standard_default["
-
-
 
 
 
@@ -32543,6 +32520,7 @@ const char* info_language_standard_default = "INFO" ":" "standard_default["
 "]";
 
 const char* info_language_extensions_default = "INFO" ":" "extensions_default["
+
 
 
   "ON"
@@ -32566,12 +32544,6 @@ int main(int argc, char* argv[])
 
 
   require += info_simulate_version[argc];
-
-
-  require += info_host_compiler[argc];
-
-
-  require += info_host_compiler_version[argc];
 
   require += info_language_standard_default[argc];
   require += info_language_extensions_default[argc];

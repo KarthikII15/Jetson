@@ -19,82 +19,96 @@ std::string FRSRunner::assignTrack(const std::string& cam_id, float cx, float cy
     // Purge stale tracks first
     purgeStaleTracksLocked(now);
 
-    // Find closest existing track within 120px
+    // Find closest existing track by X-centroid within 150px
     std::string best_id;
     float best_dist = 150.0f;
     for (auto& [tid, track] : tracks_) {
         if (track.track_id.find(cam_id) == std::string::npos) continue;
-        if (track.y_history.empty()) continue;
-        float last_y = track.y_history.back();
-        float dist = std::abs(last_y - cy);
+        if (track.x_history.empty()) continue;
+        float last_x = track.x_history.back();
+        float dist = std::abs(last_x - cx);
         if (dist < best_dist) {
             best_dist = dist;
-            best_id = tid;
+            best_id   = tid;
         }
     }
 
     if (!best_id.empty()) {
-        // Update existing track
         auto& t = tracks_[best_id];
-        // Reset direction if track was stale (person left and came back)
+        // Reset direction state if track was idle long enough (person re-entered)
         double gap = now - t.last_seen;
         if (gap > 5.0 && t.direction_fired) {
             t.direction_fired = false;
             t.committed_dir   = "";
-            t.y_history.clear();
+            t.x_history.clear();
+            t.last_x = -1.0f;
             spdlog::info("[Track] {} reset after {:.1f}s gap", best_id, gap);
         }
-        // Only add Y if meaningfully different from last value (avoids duplicates)
-        if (t.y_history.empty() || std::abs(cy - t.y_history.back()) > 5.0f) {
-            t.y_history.push_back(cy);
-            if ((int)t.y_history.size() > dir_cfg_.window_size)
-                t.y_history.pop_front();
+        // Push X only if meaningfully different from last value (jitter filter)
+        if (t.x_history.empty() || std::abs(cx - t.x_history.back()) > 5.0f) {
+            t.last_x = t.x_history.empty() ? cx : t.x_history.back();
+            t.x_history.push_back(cx);
+            if ((int)t.x_history.size() > dir_cfg_.window_size)
+                t.x_history.pop_front();
         }
         t.last_seen = now;
         return best_id;
     }
 
     // Create new track
-    spdlog::info("[Track] New track created (no match within 150px)");
+    spdlog::info("[Track] New track for cam={} (no X-match within 150px)", cam_id);
     std::string tid = cam_id + "_trk" + std::to_string(next_track_id_++);
     FaceTrack track;
-    track.track_id      = tid;
-    track.last_seen     = now;
+    track.track_id        = tid;
+    track.last_seen       = now;
     track.direction_fired = false;
-    track.y_history.push_back(cy);
+    track.last_x          = cx;
+    track.x_history.push_back(cx);
     tracks_[tid] = std::move(track);
     return tid;
 }
 
-std::string FRSRunner::computeDirection(const std::deque<float>& y_history) {
-    if ((int)y_history.size() < dir_cfg_.window_size) return "unknown";
+std::string FRSRunner::computeDirection(const std::deque<float>& x_history) {
+    if ((int)x_history.size() < dir_cfg_.window_size) return "unknown";
 
-    // Net delta from first to last
-    float net_delta = y_history.back() - y_history.front();
+    // Net delta across the window (first→last)
+    float net_delta = x_history.back() - x_history.front();
 
-    // Linear regression slope for robustness
-    int n = y_history.size();
-    float sum_x = 0, sum_y = 0, sum_xy = 0, sum_xx = 0;
+    // Linear regression slope for robustness against noise
+    int n = (int)x_history.size();
+    float sum_i = 0, sum_x = 0, sum_ix = 0, sum_ii = 0;
     for (int i = 0; i < n; i++) {
-        sum_x  += i;
-        sum_y  += y_history[i];
-        sum_xy += i * y_history[i];
-        sum_xx += i * i;
+        sum_i  += i;
+        sum_x  += x_history[i];
+        sum_ix += i * x_history[i];
+        sum_ii += i * i;
     }
-    float slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x + 1e-6f);
+    float slope = (n * sum_ix - sum_i * sum_x) / (n * sum_ii - sum_i * sum_i + 1e-6f);
     float total_movement = std::abs(net_delta);
 
-    spdlog::debug("[Direction] slope={:.1f} net_delta={:.1f} total_movement={:.1f} threshold={}",
-        slope, net_delta, total_movement, dir_cfg_.y_threshold);
+    spdlog::debug("[Direction] slope={:.1f} net_delta={:.1f} movement={:.1f} x_threshold={:.0f}",
+        slope, net_delta, total_movement, dir_cfg_.x_threshold);
 
-    // Must have minimum movement to count
-    if (total_movement < dir_cfg_.y_threshold) return "stationary";
+    // Require minimum movement to avoid triggering on stationary faces
+    if (total_movement < dir_cfg_.x_threshold) return "stationary";
 
-    bool increasing = net_delta > 0;
+    bool increasing = net_delta > 0; // left→right = X increasing
     if (dir_cfg_.entry_dir == "increasing")
         return increasing ? "entry" : "exit";
     else
         return increasing ? "exit" : "entry";
+}
+
+// Line-crossing mode: fires the instant X crosses line_x with a dead-zone
+std::string FRSRunner::computeDirectionLineCross(float prev_x, float curr_x) {
+    const float dead = 5.0f;
+    float lo = dir_cfg_.line_x - dead;
+    float hi = dir_cfg_.line_x + dead;
+    if (prev_x < lo && curr_x >= hi)  // crossed left→right
+        return dir_cfg_.entry_dir == "increasing" ? "entry" : "exit";
+    if (prev_x > hi && curr_x <= lo)  // crossed right→left
+        return dir_cfg_.entry_dir == "increasing" ? "exit" : "entry";
+    return "unknown";
 }
 
 void FRSRunner::purgeStaleTracksLocked(double now) {
@@ -124,8 +138,8 @@ bool FRSRunner::checkDirectionCooldown(const std::string& emp_id,
 FRSRunner::FRSRunner(const Config& cfg, const std::vector<CameraConfig>& cameras)
     : cfg_(cfg), cameras_(cameras), dir_cfg_(cfg.dir)
 {
-    spdlog::info("[Direction] enabled={} entry_dir={} y_threshold={} window={}", 
-        dir_cfg_.enabled, dir_cfg_.entry_dir, dir_cfg_.y_threshold, dir_cfg_.window_size);
+    spdlog::info("[Direction] enabled={} entry_dir={} x_threshold={:.0f} window={} mode={}",
+        dir_cfg_.enabled, dir_cfg_.entry_dir, dir_cfg_.x_threshold, dir_cfg_.window_size, dir_cfg_.mode);
     detector_ = std::make_unique<FaceDetector>(cfg_.det_engine,
                                                 cfg_.conf_thresh,
                                                 cfg_.nms_thresh);
@@ -139,8 +153,8 @@ FRSRunner::~FRSRunner() { stop(); }
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
 void FRSRunner::start() {
-    spdlog::info("[Direction] enabled={} entry_dir={} y_threshold={:.0f} window={}",
-        dir_cfg_.enabled, dir_cfg_.entry_dir, dir_cfg_.y_threshold, dir_cfg_.window_size);
+    spdlog::info("[Direction] enabled={} entry_dir={} x_threshold={:.0f} window={} mode={}",
+        dir_cfg_.enabled, dir_cfg_.entry_dir, dir_cfg_.x_threshold, dir_cfg_.window_size, dir_cfg_.mode);
     running_.store(true);
 
     // Start inference worker threads (share detector+embedder — TRT is thread-safe for infer)
@@ -238,12 +252,12 @@ void FRSRunner::inferenceWorker() {
 
         stat_faces_.fetch_add(faces.size());
 
-        // ── Track Y-history update (every frame, before rate limit) ──────
+        // ── Track X-history update (every frame, before recognition rate limit) ──
         if (dir_cfg_.enabled) {
             for (const auto& face : faces) {
                 float cx2 = face.box.x + face.box.width  / 2.0f;
                 float cy2 = face.box.y + face.box.height / 2.0f;
-                assignTrack(task.cam_id, cx2, cy2);
+                assignTrack(task.cam_id, cx2, cy2); // cy2 kept for compat, not stored
             }
         }
 
@@ -300,46 +314,58 @@ void FRSRunner::inferenceWorker() {
                     task.cam_id, result.full_name,
                     result.employee_code, result.similarity);
 
-                // ── Direction detection ──────────────────────────────
+                // ── Direction detection ──────────────────────────────────
                 if (dir_cfg_.enabled) {
-                    std::lock_guard<std::mutex> tlock(tracks_mtx_);
+                    std::unique_lock<std::mutex> tlock(tracks_mtx_);
                     auto it = tracks_.find(track_id);
                     if (it != tracks_.end()) {
                         auto& trk = it->second;
                         trk.employee_id = result.employee_id;
                         trk.full_name   = result.full_name;
-                        // Log Y history for debugging
-                        std::string y_hist_str;
-                        for (auto yv : trk.y_history) y_hist_str += std::to_string((int)yv) + " ";
-                        spdlog::info("[Track] {} size={} fired={} Y=[{}]",
-                            track_id, trk.y_history.size(), trk.direction_fired, y_hist_str);
+
+                        // Per-frame debug log (X-axis)
+                        std::string x_hist_str;
+                        for (auto xv : trk.x_history) x_hist_str += std::to_string((int)xv) + " ";
+                        spdlog::info("[{}] x_history size={} fired={} X=[{}]",
+                            track_id, trk.x_history.size(), trk.direction_fired, x_hist_str);
+
                         if (!trk.direction_fired) {
-                            std::string dir = computeDirection(trk.y_history);
-                            spdlog::info("[Track] {} computed_dir={}", track_id, dir);
+                            // Choose detection mode from config
+                            std::string dir;
+                            if (dir_cfg_.mode == "line_cross") {
+                                dir = computeDirectionLineCross(trk.last_x, cx);
+                            } else {
+                                dir = computeDirection(trk.x_history);
+                            }
+                            spdlog::debug("[{}] computed_dir={}", track_id, dir);
+
                             if (dir == "entry" || dir == "exit") {
                                 std::string date = payload.timestamp.substr(0, 10);
-                                tlock.~lock_guard();
+                                tlock.unlock(); // safe: std::unique_lock
                                 if (checkDirectionCooldown(result.employee_id, dir, date)) {
                                     spdlog::info("[{}] 🧭 {} → {} (track: {})",
                                         task.cam_id, result.full_name, dir, track_id);
                                     payload.direction = dir;
-                                    std::lock_guard<std::mutex> tlock2(tracks_mtx_);
-                                    auto it2 = tracks_.find(track_id);
-                                    if (it2 != tracks_.end()) {
-                                        it2->second.direction_fired = true;
-                                        it2->second.committed_dir   = dir;
+                                    {
+                                        std::lock_guard<std::mutex> tlock2(tracks_mtx_);
+                                        auto it2 = tracks_.find(track_id);
+                                        if (it2 != tracks_.end()) {
+                                            it2->second.direction_fired = true;
+                                            it2->second.committed_dir   = dir;
+                                        }
                                     }
-                                    // POST direction update to backend
+                                    // POST direction to backend
                                     std::string dir_body =
                                         std::string("{") +
-                                        "\"employeeId\":\"" + result.employee_id + "\"," +
-                                        "\"direction\":\"" + dir + "\"," +
-                                        "\"trackId\":\"" + track_id + "\"," +
-                                        "\"deviceId\":\"" + task.cam_id + "\"," +
-                                        "\"timestamp\":\"" + payload.timestamp + "\"" +
+                                        "\"employeeId\":\""  + result.employee_id  + "\"," +
+                                        "\"direction\":\""   + dir                  + "\"," +
+                                        "\"trackId\":\""     + track_id             + "\"," +
+                                        "\"deviceId\":\""    + task.cam_id          + "\"," +
+                                        "\"timestamp\":\""   + payload.timestamp    + "\"" +
                                         "}";
                                     auto [dr_body, dr_code] = http_->post("/api/attendance/direction", dir_body);
-                                    spdlog::info("[{}] Direction POST {} → HTTP {}", task.cam_id, dir, dr_code);
+                                    spdlog::info("[{}] Direction POST {} → HTTP {}",
+                                        task.cam_id, dir, dr_code);
                                 }
                             }
                         }

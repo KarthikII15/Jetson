@@ -1,0 +1,47 @@
+[
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/main.cpp.o -c /home/motivity/FRS/frs-cpp/src/main.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/main.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/trt_engine.cpp.o -c /home/motivity/FRS/frs-cpp/src/trt_engine.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/trt_engine.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/face_detector.cpp.o -c /home/motivity/FRS/frs-cpp/src/face_detector.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/face_detector.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/face_embedder.cpp.o -c /home/motivity/FRS/frs-cpp/src/face_embedder.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/face_embedder.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/gst_capture.cpp.o -c /home/motivity/FRS/frs-cpp/src/gst_capture.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/gst_capture.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/http_client.cpp.o -c /home/motivity/FRS/frs-cpp/src/http_client.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/http_client.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/token_manager.cpp.o -c /home/motivity/FRS/frs-cpp/src/token_manager.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/token_manager.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/enroll_server.cpp.o -c /home/motivity/FRS/frs-cpp/src/enroll_server.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/enroll_server.cpp"
+},
+{
+  "directory": "/home/motivity/FRS/frs-cpp/build",
+  "command": "/usr/bin/c++ -DFMT_LOCALE -DFMT_SHARED -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/usr/local/cuda/include -I/home/motivity/FRS/frs-cpp/include -isystem /usr/include/opencv4 -O3 -DNDEBUG -march=armv8-a+simd -std=gnu++17 -o CMakeFiles/frs_runner.dir/src/runner.cpp.o -c /home/motivity/FRS/frs-cpp/src/runner.cpp",
+  "file": "/home/motivity/FRS/frs-cpp/src/runner.cpp"
+}
+]

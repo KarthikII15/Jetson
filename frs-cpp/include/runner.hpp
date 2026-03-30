@@ -19,20 +19,23 @@
 
 struct DirectionConfig {
     bool        enabled       = false;
-    std::string entry_dir     = "increasing"; // "increasing" or "decreasing"
-    float       y_threshold   = 45.0f;        // min px movement to count
-    int         window_size   = 6;            // frames in sliding window
-    double      track_ttl     = 30.0;         // seconds before track expires
-    double      cooldown_sec  = 300.0;        // 5 min per employee+direction
+    std::string entry_dir     = "increasing"; // "increasing" = left→right = entry
+    float       x_threshold   = 30.0f;        // min px X-movement across window
+    int         window_size   = 4;            // frames in sliding window
+    double      track_ttl     = 10.0;         // seconds before track expires
+    double      cooldown_sec  = 30.0;         // seconds per employee+direction
+    float       line_x        = 960.0f;       // virtual vertical boundary (line_cross mode)
+    std::string mode          = "slope";      // "slope" or "line_cross"
 };
 
 struct FaceTrack {
     std::string          track_id;
     std::string          employee_id;     // set after recognition
     std::string          full_name;
-    std::deque<float>    y_history;       // centroid Y over last N frames
-    double               last_seen;       // epoch timestamp
-    bool                 direction_fired; // true after direction committed
+    std::deque<float>    x_history;       // centroid X over last N frames
+    float                last_x     = -1.0f; // previous X for line_cross mode
+    double               last_seen  = 0.0;
+    bool                 direction_fired = false;
     std::string          committed_dir;   // "entry" or "exit"
 };
 
@@ -118,7 +121,8 @@ private:
     bool checkCooldown(const std::string& cam_id);
     std::string nowIso8601();
     std::string assignTrack(const std::string& cam_id, float cx, float cy);
-    std::string computeDirection(const std::deque<float>& y_history);
+    std::string computeDirection(const std::deque<float>& x_history);
+    std::string computeDirectionLineCross(float prev_x, float curr_x);
     void        purgeStaleTracksLocked(double now);
     bool        checkDirectionCooldown(const std::string& emp_id,
                                        const std::string& direction,
