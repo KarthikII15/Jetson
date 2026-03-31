@@ -41,6 +41,7 @@ Config loadConfig(const std::string& path) {
         cfg.dir.cooldown_sec = d.value("cooldown_seconds",   30.0);
         cfg.dir.line_x       = d.value("line_x",             960.0f);
         cfg.dir.mode         = d.value("mode",               "slope");
+        cfg.dir.track_match_dist = d.value("track_match_dist", 150.0f);
     }
     return cfg;
 }

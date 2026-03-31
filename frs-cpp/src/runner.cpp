@@ -19,9 +19,9 @@ std::string FRSRunner::assignTrack(const std::string& cam_id, float cx, float cy
     // Purge stale tracks first
     purgeStaleTracksLocked(now);
 
-    // Find closest existing track by X-centroid within 150px
+    // Find closest existing track by X-centroid within threshold
     std::string best_id;
-    float best_dist = 150.0f;
+    float best_dist = dir_cfg_.track_match_dist;
     for (auto& [tid, track] : tracks_) {
         if (track.track_id.find(cam_id) == std::string::npos) continue;
         if (track.x_history.empty()) continue;
@@ -56,7 +56,7 @@ std::string FRSRunner::assignTrack(const std::string& cam_id, float cx, float cy
     }
 
     // Create new track
-    spdlog::info("[Track] New track for cam={} (no X-match within 150px)", cam_id);
+    spdlog::info("[Track] New track for cam={} (no X-match within {:.0f}px)", cam_id, dir_cfg_.track_match_dist);
     std::string tid = cam_id + "_trk" + std::to_string(next_track_id_++);
     FaceTrack track;
     track.track_id        = tid;

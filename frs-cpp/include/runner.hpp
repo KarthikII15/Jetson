@@ -26,6 +26,7 @@ struct DirectionConfig {
     double      cooldown_sec  = 30.0;         // seconds per employee+direction
     float       line_x        = 960.0f;       // virtual vertical boundary (line_cross mode)
     std::string mode          = "slope";      // "slope" or "line_cross"
+    float       track_match_dist = 150.0f;     // max px jump for tracking
 };
 
 struct FaceTrack {
