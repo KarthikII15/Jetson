@@ -1,4 +1,6 @@
 #include "runner.hpp"
+#include <sys/statvfs.h>
+#include <cstring>
 #include "http_client.hpp"
 #include "enroll_server.hpp"
 #include <nlohmann/json.hpp>
@@ -131,13 +133,85 @@ int main(int argc, char** argv) {
                 std::string hb_body = std::string("{\"stats\":{\"frames_processed\":") +
                     std::to_string(s.frames_processed) + "}}";
                 hb_http.post("/api/cameras/entrance-cam-01/heartbeat", hb_body);
-                // Jetson device heartbeat
-                std::string jetson_body = std::string("{\"stats\":{\"frames_processed\":") +
-                    std::to_string(s.frames_processed) +
-                    ",\"faces_detected\":" + std::to_string(s.faces_detected) +
-                    ",\"matches\":" + std::to_string(s.matches) + "}}";
-                hb_http.post("/api/cameras/jetson-orin-01/heartbeat", jetson_body);
-            } catch (...) {}
+
+                // ── Read system telemetry ──────────────────────────────
+                // CPU usage via /proc/loadavg (1-min load avg as %)
+                float cpu_pct = 0.0f;
+                { FILE* f = fopen("/proc/loadavg","r");
+                  if (f) { float load1; fscanf(f,"%f",&load1);
+                    // normalize by CPU count (8 cores on Jetson Orin NX)
+                    cpu_pct = std::min(100.0f, load1 / 8.0f * 100.0f); fclose(f); } }
+
+                // Memory
+                long mem_total=0, mem_free=0, mem_available=0;
+                { FILE* f = fopen("/proc/meminfo","r"); char key[64]; long val;
+                  if (f) { while(fscanf(f,"%s %ld kB",key,&val)==2) {
+                    if(strcmp(key,"MemTotal:")==0) mem_total=val;
+                    else if(strcmp(key,"MemAvailable:")==0) mem_available=val; }
+                    mem_free=mem_available; fclose(f); } }
+                long mem_used_mb = (mem_total - mem_available) / 1024;
+                long mem_total_mb = mem_total / 1024;
+
+                // Temperature
+                float temp_c = 0.0f;
+                { FILE* f = fopen("/sys/class/thermal/thermal_zone0/temp","r");
+                  if (f) { int t; fscanf(f,"%d",&t); temp_c=(float)t/1000.0f; fclose(f); } }
+
+                // GPU usage via sysfs (non-blocking)
+                float gpu_pct = 0.0f;
+                { FILE* f = fopen("/sys/class/devfreq/17000000.ga10b/cur_freq","r");
+                  if (!f) f = fopen("/sys/class/devfreq/57000000.gpu/cur_freq","r");
+                  if (!f) f = fopen("/sys/kernel/debug/bpmp/debug/clk/gpc0clk/rate","r");
+                  if (f) { long cur=0,max=1; fscanf(f,"%ld",&cur); fclose(f);
+                    FILE* fm = fopen("/sys/class/devfreq/17000000.ga10b/max_freq","r");
+                    if (!fm) fm = fopen("/sys/class/devfreq/57000000.gpu/max_freq","r");
+                    if (fm) { fscanf(fm,"%ld",&max); fclose(fm); }
+                    if (max>0) gpu_pct = (float)cur/(float)max*100.0f; } }
+
+                // Uptime
+                long uptime_sec = 0;
+                { FILE* f = fopen("/proc/uptime","r");
+                  if (f) { double up; fscanf(f,"%lf",&up); uptime_sec=(long)up; fclose(f); } }
+
+                // Disk usage
+                float disk_used_gb = 0.0f;
+                { struct statvfs st; if(statvfs("/",&st)==0) {
+                    unsigned long total = st.f_blocks * st.f_frsize;
+                    unsigned long free_ = st.f_bfree  * st.f_frsize;
+                    disk_used_gb = (float)(total-free_)/(1024.0f*1024.0f*1024.0f); } }
+
+                // ── Jetson heartbeat with telemetry ───────────────────
+                char jetson_body[1024];
+                snprintf(jetson_body, sizeof(jetson_body),
+                    "{\"status\":\"online\","
+                    "\"cpu_percent\":%.1f,"
+                    "\"memory_used_mb\":%ld,"
+                    "\"memory_total_mb\":%ld,"
+                    "\"gpu_percent\":%.1f,"
+                    "\"temperature_c\":%.1f,"
+                    "\"disk_used_gb\":%.2f,"
+                    "\"uptime_seconds\":%ld,"
+                    "\"cameras\":[{"
+                    "\"cam_id\":\"entrance-cam-01\","
+                    "\"status\":\"online\","
+                    "\"accuracy\":%.1f,"
+                    "\"total_scans\":%d,"
+                    "\"error_rate\":0.0"
+                    "}]}",
+                    cpu_pct, mem_used_mb, mem_total_mb,
+                    gpu_pct, temp_c, disk_used_gb, uptime_sec,
+                    s.faces_detected > 0 ? (float)s.matches/(float)(s.matches+s.unknowns)*100.0f : 0.0f,
+                    s.frames_processed
+                );
+                spdlog::info("[Heartbeat] cpu={:.1f} gpu={:.1f} temp={:.1f} mem={}/{}", 
+                    cpu_pct, gpu_pct, temp_c, mem_used_mb, mem_total_mb);
+                spdlog::info("[Heartbeat] body={}", std::string(jetson_body).substr(0,200));
+                hb_http.post("/api/devices/nug-boxes/jetson-orin-01/heartbeat", std::string(jetson_body));
+            } catch (const std::exception& e) {
+                spdlog::error("[Heartbeat] failed: {}", e.what());
+            } catch (...) {
+                spdlog::error("[Heartbeat] unknown error");
+            }
         }
 
         spdlog::info("Shutting down...");
