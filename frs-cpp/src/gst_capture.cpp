@@ -46,9 +46,9 @@ cv::VideoCapture CaptureThread::openCapture() {
         return cap;
     }
 
-    // Last resort: plain RTSP (OpenCV internal)
+    // Last resort: FFMPEG direct (bypasses GStreamer entirely)
     spdlog::warn("[{}] GStreamer unavailable, using plain RTSP", cfg_.id);
-    return cv::VideoCapture(cfg_.rtsp_url);
+    return cv::VideoCapture(cfg_.rtsp_url, cv::CAP_FFMPEG);
 }
 
 // ── Capture loop ──────────────────────────────────────────────────────────────

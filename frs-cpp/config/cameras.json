@@ -4,7 +4,7 @@
       "id": "entrance-cam-01",
       "device_code": "device-1",
       "enabled": true,
-      "rtsp_url": "rtsp://admin:Mli%40Frs!2026@172.18.3.201:554/h264",
+      "rtsp_url": "rtsp://admin:Mli%40Frs!2026@172.18.3.203:554/h264",
       "fps_target": 5,
       "width": 1280,
       "height": 720,

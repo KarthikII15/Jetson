@@ -12,7 +12,7 @@
     }
   },
   "backend": {
-    "url":        "http://172.20.100.222:8080",
+    "url":        "http://127.0.0.1:5003",
     "token_path": "/opt/frs/device_token.txt"
   },
   "conf_threshold":    0.45,
