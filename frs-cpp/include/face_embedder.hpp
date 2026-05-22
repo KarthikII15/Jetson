@@ -13,7 +13,7 @@ using Embedding = std::array<float, 512>;
 
 class FaceEmbedder {
 public:
-    explicit FaceEmbedder(const std::string& engine_path);
+    explicit FaceEmbedder(const std::string& engine_path, int dla_core = -1);
 
     // Compute L2-normalized 512-d embedding from 112×112 aligned face crop
     Embedding embed(const cv::Mat& aligned_bgr);

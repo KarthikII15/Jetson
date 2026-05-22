@@ -18,7 +18,8 @@ class FaceDetector {
 public:
     explicit FaceDetector(const std::string& engine_path,
                           float conf_thresh = 0.45f,
-                          float nms_thresh  = 0.45f);
+                          float nms_thresh  = 0.45f,
+                          int dla_core      = -1);
 
     // Detect faces in frame, return sorted by confidence descending
     std::vector<FaceBox> detect(const cv::Mat& bgr_frame);

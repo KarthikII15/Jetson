@@ -7,8 +7,8 @@
 #include <spdlog/spdlog.h>
 
 FaceDetector::FaceDetector(const std::string& engine_path,
-                            float conf_thresh, float nms_thresh)
-    : engine_(engine_path)
+                            float conf_thresh, float nms_thresh, int dla_core)
+    : engine_(engine_path, dla_core)
     , conf_thresh_(conf_thresh)
     , nms_thresh_(nms_thresh)
 {

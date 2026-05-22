@@ -5,8 +5,8 @@
 #include <numeric>
 #include <spdlog/spdlog.h>
 
-FaceEmbedder::FaceEmbedder(const std::string& engine_path)
-    : engine_(engine_path)
+FaceEmbedder::FaceEmbedder(const std::string& engine_path, int dla_core)
+    : engine_(engine_path, dla_core)
 {
     input_buf_.resize(1 * 3 * INPUT_H * INPUT_W);
     output_buf_.resize(EMB_DIM);

@@ -7,7 +7,7 @@
 
 class TRTEngine {
 public:
-    explicit TRTEngine(const std::string& engine_path);
+    explicit TRTEngine(const std::string& engine_path, int dla_core = -1);
     ~TRTEngine();
     void infer(const std::vector<const float*>& inputs, const std::vector<float*>& outputs);
     int              numBindings()    const;

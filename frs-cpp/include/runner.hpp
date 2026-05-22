@@ -19,14 +19,16 @@
 
 struct DirectionConfig {
     bool        enabled       = false;
-    std::string entry_dir     = "increasing"; // "increasing" = left→right = entry
-    float       x_threshold   = 30.0f;        // min px X-movement across window
-    int         window_size   = 4;            // frames in sliding window
-    double      track_ttl     = 10.0;         // seconds before track expires
-    double      cooldown_sec  = 30.0;         // seconds per employee+direction
-    float       line_x        = 960.0f;       // virtual vertical boundary (line_cross mode)
-    std::string mode          = "slope";      // "slope" or "line_cross"
-    float       track_match_dist = 150.0f;     // max px jump for tracking
+    std::string entry_dir     = "increasing"; 
+    float       x_threshold   = 30.0f;        
+    float       y_threshold   = 80.0f;        
+    int         window_size   = 4;            
+    double      track_ttl     = 10.0;         
+    double      cooldown_sec  = 30.0;         
+    float       line_x        = 960.0f;       
+    std::string mode          = "slope";      
+    std::string axis          = "Y";          
+    float       track_match_dist = 150.0f;     
 };
 
 struct FaceTrack {
@@ -41,17 +43,34 @@ struct FaceTrack {
 };
 
 struct Config {
-    std::string det_engine;       // path to YOLOv8-face .engine
-    std::string emb_engine;       // path to ArcFace R50 .engine
-    std::string backend_url;      // http://VM_IP:8080
-    std::string token_path;       // /opt/frs/device_token.txt
+    std::string det_engine;       
+    std::string emb_engine;       
+    std::string backend_url;      
+    std::string backend_endpoint;  
+    std::string token_path;        
+    int         tenant_id = 1;
+    int         customer_id = 1;
+    int         site_id = 1;
     float       conf_thresh = 0.45f;
     float       nms_thresh  = 0.45f;
-    float       match_thresh = 0.55f;  // cosine similarity threshold
-    double      cooldown_sec = 10.0;   // min seconds between marks per camera
-    int         inference_threads = 2; // parallel TRT inference workers
+    float       match_thresh = 0.55f;  
+    double      cooldown_sec = 10.0;   
+    int         inference_threads = 2; 
     int         queue_depth = 64;
+    int         det_dla_core = -1;     
+    int         emb_dla_core = -1;
+    int         metrics_port = 5000;   
     DirectionConfig dir;
+
+    std::string device_id = "jetson-orin-01";
+    std::string default_gate = "Main Gate";
+    int         default_branch_id = 1;
+
+    // Keycloak auto-refresh credentials
+    std::string keycloak_url;
+    std::string keycloak_client_id  = "attendance-frontend";
+    std::string keycloak_username;
+    std::string keycloak_password;
 };
 
 struct FrameTask {
@@ -68,6 +87,11 @@ public:
     void start();
     void stop();
 
+    // Hot-reload — called by EnrollServer on /config/reload or polling thread
+    void reloadCameras(const std::vector<CameraConfig>& new_cameras);
+    void updateThresholds(float match_thresh, float cooldown_sec, float conf_thresh);
+    void updateToken(const std::string& new_token);
+
     // Stats for /health endpoint
     struct Stats {
         uint64_t frames_processed;
@@ -83,6 +107,12 @@ private:
     Config                               cfg_;
     std::vector<CameraConfig>            cameras_;
     std::vector<std::unique_ptr<CaptureThread>> captures_;
+    std::mutex                           captures_mtx_;
+
+    // Live-reloadable thresholds (atomic so inference workers read without locking)
+    std::atomic<float>  live_match_thresh_{0.38f};
+    std::atomic<float>  live_cooldown_sec_{30.0f};
+    std::atomic<float>  live_conf_thresh_{0.35f};
 
     // Inference pipeline
     std::unique_ptr<FaceDetector>        detector_;

@@ -1,12 +1,14 @@
 {
   "models": {
     "face_detection": {
-      "engine_path": "/opt/frs-models/trt/yolov8n-face-fp16.engine",
-      "onnx_path":   "/opt/frs-models/onnx/yolov8n-face.onnx"
+      "engine_path": "/opt/frs-models/trt/yolov8n-face-dla0.engine",
+      "onnx_path":   "/opt/frs-models/onnx/yolov8n-face.onnx",
+      "dla_core":    0
     },
     "face_embedding": {
-      "engine_path": "/opt/frs-models/trt/arcface-r50-fp16.engine",
-      "onnx_path":   "/opt/frs-models/onnx/arcface-r50.onnx"
+      "engine_path": "/opt/frs-models/trt/arcface-r50-dla1.engine",
+      "onnx_path":   "/opt/frs-models/onnx/arcface-r50.onnx",
+      "dla_core":    1
     }
   },
   "backend": {
@@ -15,8 +17,19 @@
   },
   "conf_threshold":    0.45,
   "nms_threshold":     0.45,
-  "match_threshold":   0.55,
+  "match_threshold":   0.65,
   "cooldown_seconds":  10,
   "inference_threads": 2,
-  "queue_depth":       64
+  "queue_depth":       64,
+  "direction": {
+    "enabled": true,
+    "entry_direction": "increasing",
+    "y_threshold": 80,
+    "x_threshold": 50,
+    "tracking_window": 6,
+    "track_ttl_seconds": 10,
+    "cooldown_seconds": 5,
+    "mode": "slope",
+    "track_match_dist": 150.0
+  }
 }

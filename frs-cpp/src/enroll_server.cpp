@@ -20,8 +20,9 @@ using json = nlohmann::json;
 
 EnrollServer::EnrollServer(int port, FRSRunner& runner,
                              const Config& cfg,
-                             const std::vector<CameraConfig>& cameras)
-    : port_(port), runner_(runner), cfg_(cfg), cameras_(cameras) {}
+                             const std::vector<CameraConfig>& cameras,
+                             std::atomic<bool>& shutdown_flag)
+    : port_(port), runner_(runner), cfg_(cfg), cameras_(cameras), shutdown_(shutdown_flag) {}
 
 // ── HTTP helpers ──────────────────────────────────────────────────────────────
 std::string EnrollServer::respond(int code, const std::string& ct,
@@ -52,26 +53,60 @@ std::string EnrollServer::respondJson(int code, const std::string& body) {
 std::string EnrollServer::handleHealth() {
     auto s = runner_.stats();
     json j;
-    j["status"]            = "ok";
-    j["frames_processed"]  = s.frames_processed;
-    j["faces_detected"]    = s.faces_detected;
-    j["matches"]           = s.matches;
-    j["unknowns"]          = s.unknowns;
-    j["queue_depth"]       = s.queue_depth;
-    j["active_cameras"]    = s.active_cameras;
-    j["inference_engine"]  = "tensorrt_fp16";
+    j["status"]         = "ok";
+    j["active_cameras"] = s.active_cameras;
+    j["timestamp"]      = std::time(nullptr);
+    return respondJson(200, j.dump(2));
+}
+
+std::string EnrollServer::handleInfo() {
+    json j;
+    j["device_id"] = cfg_.device_id;
     j["models"]["detection"] = cfg_.det_engine;
     j["models"]["embedding"] = cfg_.emb_engine;
+    
+    // Uptime
+    long uptime_sec = 0;
+    FILE* f = fopen("/proc/uptime", "r");
+    if (f) {
+        double up;
+        if (fscanf(f, "%lf", &up) == 1) uptime_sec = (long)up;
+        fclose(f);
+    }
+    j["uptime_seconds"] = uptime_sec;
+    j["version"] = "2.1.0";
+    
+    return respondJson(200, j.dump(2));
+}
 
+std::string EnrollServer::handleCameras() {
     json cam_arr = json::array();
     for (const auto& c : cameras_) {
         json cam;
-        cam["id"]      = c.id;
-        cam["fps"]     = c.fps_target;
-        cam["hw"]      = c.hw_decode;
+        cam["id"]          = c.id;
+        cam["name"]        = c.name;
+        cam["rtsp_url"]    = c.rtsp_url;
+        cam["device_code"] = c.device_code;
+        cam["gate_name"]   = c.gate_name;
+        cam["direction"]   = c.direction;
+        cam["branch_id"]   = c.branch_id;
+        cam["fps_target"]  = c.fps_target;
+        cam["hw_decode"]   = c.hw_decode;
         cam_arr.push_back(cam);
     }
-    j["cameras"] = cam_arr;
+    return respondJson(200, cam_arr.dump(2));
+}
+
+std::string EnrollServer::handleMetrics() {
+    auto s = runner_.stats();
+    json j;
+    j["status"]             = "ok";
+    j["active_cameras"]     = s.active_cameras;
+    j["frames_processed"]   = s.frames_processed;
+    j["faces_detected"]     = s.faces_detected;
+    j["matches_recognized"] = s.matches;
+    j["unknowns"]           = s.unknowns;
+    j["queue_depth"]        = s.queue_depth;
     return respondJson(200, j.dump(2));
 }
 
@@ -80,6 +115,7 @@ std::string EnrollServer::handleEnroll(const std::string& body) {
         auto j = json::parse(body);
         std::string emp_id = j["employee_id"].get<std::string>();
         std::string cam_id = j.value("cam_id", cameras_.empty() ? "" : cameras_[0].id);
+        std::string angle = j.value("angle", "front");
 
         const CameraConfig* cam = nullptr;
         for (const auto& cc : cameras_)
@@ -96,7 +132,17 @@ std::string EnrollServer::handleEnroll(const std::string& body) {
         // Uses a short-lived pipeline separate from the main runner
         spdlog::info("[Enroll] Capturing enrollment frame from RTSP...");
 
-        std::string snap_file = "/tmp/frs_enroll_" + emp_id + ".jpg";
+        // Generate timestamp for unique filename
+        auto now = std::chrono::system_clock::now();
+        auto time_t = std::chrono::system_clock::to_time_t(now);
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+        std::stringstream ts;
+        ts << std::put_time(std::gmtime(&time_t), "%Y-%m-%dT%H-%M-%S");
+        std::string timestamp = ts.str();
+
+        // Save to persistent photos directory
+        std::string photo_filename = emp_id + "_" + timestamp + ".jpg";
+        std::string snap_file = "/opt/frs/photos/" + photo_filename;
 
         // Build GStreamer pipeline with multifilesink to write one JPEG
         std::string gst_snap =
@@ -118,7 +164,7 @@ std::string EnrollServer::handleEnroll(const std::string& body) {
         // Read JPEG file into cv::Mat
         cv::Mat frame = cv::imread(snap_file);
         // Clean up temp file
-        system(("rm -f " + snap_file).c_str());
+        // system(("rm -f " + snap_file).c_str());
 
         if (frame.empty()) {
             return respondJson(503, R"({"error":"Failed to capture frame from camera"})");
@@ -147,6 +193,8 @@ std::string EnrollServer::handleEnroll(const std::string& body) {
         payload["embedding"] = json::array();
         for (float v : emb) payload["embedding"].push_back(v);
         payload["confidence"] = faces[0].conf;
+        payload["angle"]      = angle;           // ADD THIS
+        payload["photo_path"] = photo_filename;  // ADD THIS
         payload["source"]     = "cpp-enroll-server";
 
         HttpClient http(cfg_.backend_url, cfg_.token_path);
@@ -159,6 +207,7 @@ std::string EnrollServer::handleEnroll(const std::string& body) {
             resp["success"]     = true;
             resp["employee_id"] = emp_id;
             resp["confidence"]  = faces[0].conf;
+            resp["photo_path"]  = photo_filename;
             resp["message"]     = "Enrolled";
             spdlog::info("[Enroll] Employee {} enrolled (conf={:.2f})", emp_id, faces[0].conf);
             return respondJson(201, resp.dump());
@@ -251,6 +300,97 @@ std::string EnrollServer::handleRecognizeOnce(const std::string& body) {
     }
 }
 
+// ── Config reload (POST /config/reload) ───────────────────────────────────────
+// Payload: { "device": {...}, "cameras": [...], "token": null|"eyJ..." }
+std::string EnrollServer::handleConfigReload(const std::string& body) {
+    try {
+        auto j = json::parse(body);
+
+        // Device settings
+        if (j.contains("device")) {
+            auto& d = j["device"];
+            float match    = d.value("match_threshold", 0.0f);
+            float cooldown = d.value("cooldown_seconds", 0.0f);
+            float conf     = d.value("conf_threshold",   0.0f);
+            runner_.updateThresholds(match, cooldown, conf);
+
+            std::string status = d.value("status", "active");
+            if (status == "deactivated") {
+                spdlog::warn("[EnrollServer] Device deactivated by backend — shutting down");
+                shutdown_.store(true);
+                return respondJson(200, R"({"ok":true,"action":"deactivated"})");
+            }
+        }
+
+        // Cameras
+        if (j.contains("cameras") && j["cameras"].is_array()) {
+            std::vector<CameraConfig> new_cams;
+            for (const auto& c : j["cameras"]) {
+                CameraConfig cam;
+                cam.id          = c.value("id",          c.value("camera_id", ""));
+                cam.name        = c.value("name",        cam.id);
+                cam.rtsp_url    = c.value("rtsp_url",    "");
+                cam.device_code = c.value("device_code", cam.id);
+                cam.gate_name   = c.value("gate_name",   "");
+                cam.direction   = c.value("direction",   "entry");
+                cam.branch_id   = c.value("branch_id",   1);
+                cam.fps_target  = c.value("fps_target",  5);
+                cam.hw_decode   = c.value("hw_decode",   true);
+                cam.enabled     = c.value("enabled",     true);
+                if (!cam.rtsp_url.empty()) new_cams.push_back(cam);
+            }
+            if (!new_cams.empty()) runner_.reloadCameras(new_cams);
+        }
+
+        // Token
+        if (j.contains("token") && j["token"].is_string()) {
+            runner_.updateToken(j["token"].get<std::string>());
+        }
+
+        spdlog::info("[EnrollServer] Config reload applied from backend push");
+        return respondJson(200, R"({"ok":true})");
+
+    } catch (const std::exception& e) {
+        spdlog::error("[EnrollServer] Config reload parse error: {}", e.what());
+        json err; err["error"] = e.what();
+        return respondJson(400, err.dump());
+    }
+}
+
+// ── Device command (POST /device/command) ─────────────────────────────────────
+// Payload: { "command": "update_token"|"deactivate"|"restart", "token": "..." }
+std::string EnrollServer::handleCommand(const std::string& body) {
+    try {
+        auto j = json::parse(body);
+        std::string cmd = j.value("command", "");
+
+        if (cmd == "update_token") {
+            std::string tok = j.value("token", "");
+            if (tok.empty()) return respondJson(400, R"({"error":"token required"})");
+            runner_.updateToken(tok);
+            spdlog::info("[EnrollServer] Token updated via command");
+            return respondJson(200, R"({"ok":true,"action":"token_updated"})");
+
+        } else if (cmd == "deactivate") {
+            spdlog::warn("[EnrollServer] Deactivate command received — shutting down");
+            shutdown_.store(true);
+            return respondJson(200, R"({"ok":true,"action":"deactivated"})");
+
+        } else if (cmd == "restart") {
+            spdlog::info("[EnrollServer] Restart command received");
+            shutdown_.store(true);  // systemd Restart=always will bring it back up
+            return respondJson(200, R"({"ok":true,"action":"restarting"})");
+
+        } else {
+            json err; err["error"] = "unknown command: " + cmd;
+            return respondJson(400, err.dump());
+        }
+    } catch (const std::exception& e) {
+        json err; err["error"] = e.what();
+        return respondJson(400, err.dump());
+    }
+}
+
 // ── Request parser ────────────────────────────────────────────────────────────
 EnrollServer::HttpRequest EnrollServer::parseRequest(const std::string& raw) {
     HttpRequest req;
@@ -327,12 +467,22 @@ void EnrollServer::handleClient(int fd) {
 
     if (req.method == "GET" && req.path == "/health") {
         response = handleHealth();
+    } else if (req.method == "GET" && req.path == "/info") {
+        response = handleInfo();
+    } else if (req.method == "GET" && req.path == "/cameras") {
+        response = handleCameras();
+    } else if (req.method == "GET" && req.path == "/metrics") {
+        response = handleMetrics();
     } else if (req.method == "POST" && req.path == "/enroll-image") {
         response = handleEnrollImage(req.body, req.content_type);
     } else if (req.method == "POST" && req.path == "/enroll") {
         response = handleEnroll(req.body);
     } else if (req.method == "POST" && req.path == "/recognize/once") {
         response = handleRecognizeOnce(req.body);
+    } else if (req.method == "POST" && req.path == "/config/reload") {
+        response = handleConfigReload(req.body);
+    } else if (req.method == "POST" && req.path == "/device/command") {
+        response = handleCommand(req.body);
     } else if (req.method == "OPTIONS") {
         response = respond(200, "text/plain", "");
     } else if (req.method == "GET" && req.path.substr(0, 8) == "/photos/") {

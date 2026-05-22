@@ -10,13 +10,19 @@
 #include <thread>
 
 struct CameraConfig {
-    std::string id;           // device ID, e.g. "entrance-cam-01"
-    std::string rtsp_url;     // full rtsp:// URL (credentials embedded)
-    std::string device_code;  // for backend API
-    int   fps_target = 5;     // target inference FPS (not capture FPS)
+    std::string id;
+    std::string name;
+    std::string rtsp_url;
+    std::string device_code;
+    std::string gate_name;
+    std::string direction;
+    int         branch_id;
+    std::string branch_name;
+    int   fps_target = 5;
     int   width      = 1280;
     int   height     = 720;
-    bool  hw_decode  = true;  // use nvv4l2decoder on Jetson
+    bool  hw_decode  = true;
+    bool  enabled    = true;
 };
 
 // Callback type: called with each frame ready for inference
@@ -32,6 +38,7 @@ public:
     void start();
     void stop();
     bool isRunning() const { return running_.load(); }
+    const std::string& cameraId() const { return cfg_.id; }
 
     // Reconnect attempts since last successful frame
     int reconnects() const { return reconnects_.load(); }

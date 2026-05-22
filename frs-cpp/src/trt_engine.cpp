@@ -14,13 +14,18 @@ public:
 };
 static TRTLogger gLogger;
 
-TRTEngine::TRTEngine(const std::string& engine_path) {
+TRTEngine::TRTEngine(const std::string& engine_path, int dla_core) {
     std::ifstream file(engine_path, std::ios::binary | std::ios::ate);
     if (!file.good()) throw std::runtime_error("Cannot open engine: " + engine_path);
     size_t size = file.tellg(); file.seekg(0);
     std::vector<char> data(size); file.read(data.data(), size);
 
     runtime_.reset(nvinfer1::createInferRuntime(gLogger));
+    if (dla_core >= 0) {
+        runtime_->setDLACore(dla_core);
+        spdlog::info("[TRT] Engine {} configured for DLA core {}", engine_path, dla_core);
+    }
+
     engine_.reset(runtime_->deserializeCudaEngine(data.data(), size));
     if (!engine_) throw std::runtime_error("Failed to deserialize: " + engine_path);
     context_.reset(engine_->createExecutionContext());

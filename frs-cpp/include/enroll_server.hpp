@@ -13,7 +13,8 @@ class EnrollServer {
 public:
     EnrollServer(int port, FRSRunner& runner,
                  const Config& cfg,
-                 const std::vector<CameraConfig>& cameras);
+                 const std::vector<CameraConfig>& cameras,
+                 std::atomic<bool>& shutdown_flag);
 
     void run();   // blocking
     void stop();
@@ -24,13 +25,19 @@ private:
     Config                           cfg_;
     std::vector<CameraConfig>        cameras_;
     std::atomic<bool>                running_{true};
+    std::atomic<bool>&               shutdown_;
     int                              server_fd_ = -1;
 
     // Request handlers
     std::string handleHealth();
+    std::string handleInfo();
+    std::string handleCameras();
+    std::string handleMetrics();
     std::string handleEnroll(const std::string& body);
     std::string handleEnrollImage(const std::string& body, const std::string& content_type);
     std::string handleRecognizeOnce(const std::string& body);
+    std::string handleConfigReload(const std::string& body);
+    std::string handleCommand(const std::string& body);
 
     // HTTP helpers
     std::string respond(int code, const std::string& content_type,
